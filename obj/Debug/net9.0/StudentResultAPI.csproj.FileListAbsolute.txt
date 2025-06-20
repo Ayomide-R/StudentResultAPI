@@ -15,6 +15,7 @@ C:\Users\DELL\StudentResultAPI\obj\Debug\net9.0\StudentResultAPI.AssemblyInfo.cs
 C:\Users\DELL\StudentResultAPI\obj\Debug\net9.0\StudentResultAPI.csproj.CoreCompileInputs.cache
 C:\Users\DELL\StudentResultAPI\obj\Debug\net9.0\StudentResultAPI.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\DELL\StudentResultAPI\obj\Debug\net9.0\StudentResultAPI.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\DELL\StudentResultAPI\obj\Debug\net9.0\StudentResultAPI.sourcelink.json
 C:\Users\DELL\StudentResultAPI\obj\Debug\net9.0\scopedcss\bundle\StudentResultAPI.styles.css
 C:\Users\DELL\StudentResultAPI\obj\Debug\net9.0\staticwebassets.build.json
 C:\Users\DELL\StudentResultAPI\obj\Debug\net9.0\staticwebassets.build.json.cache

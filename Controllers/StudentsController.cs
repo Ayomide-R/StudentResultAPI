@@ -47,5 +47,25 @@ namespace StudentResultAPI.Controllers
             var students = _repo.SearchByName(name);
             return Ok(students);
         }
+
+        // Update student
+        [HttpPut("{id}")]
+        public IActionResult UpdateStudent(string id, Student updatedStudent)
+        {
+            var success = _repo.UpdateStudent(id, updatedStudent);
+            if (!success)
+                return NotFound("Student not found");
+            return Ok("Student updated successfully");
+        }
+
+        // Delete student
+        [HttpDelete("{id}")]
+        public IActionResult DeleteStudent(string id)
+        {
+            var success = _repo.DeleteStudent(id);
+            if (!success)
+                return NotFound("Student not found");
+            return Ok("Student deleted successfully");
+        }
     }
 }
