@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using StudentResultAPI.Models;
-using StudentResultAPI.Repositories;
+using StudentResultAPI.DTOs;
+using StudentResultAPI.Services;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace StudentResultAPI.Controllers
 {
@@ -8,33 +10,34 @@ namespace StudentResultAPI.Controllers
     [Route("api/[controller]")]
     public class StudentsController : ControllerBase
     {
-        private readonly StudentRepository _repo;
+        private readonly IStudentService _service;
 
-        public StudentsController(StudentRepository repo)
+        public StudentsController(IStudentService service)
         {
-            _repo = repo;
+            _service = service;
         }
 
         // Add new student
         [HttpPost]
-        public IActionResult AddStudent(Student student)
+        public async Task<ActionResult<StudentDto>> AddStudent(CreateStudentDto createStudentDto)
         {
-            _repo.AddStudent(student);
-            return Created("", student);
+            var student = await _service.CreateStudentAsync(createStudentDto);
+            return CreatedAtAction(nameof(GetById), new { id = student.Id }, student);
         }
 
         // Get all students
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<ActionResult<IEnumerable<StudentDto>>> GetAll()
         {
-            return Ok(_repo.GetAll());
+            var students = await _service.GetAllStudentsAsync();
+            return Ok(students);
         }
 
         // Get student by ID
         [HttpGet("{id}")]
-        public IActionResult GetById(string id)
+        public async Task<ActionResult<StudentDto>> GetById(string id)
         {
-            var student = _repo.GetById(id);
+            var student = await _service.GetStudentByIdAsync(id);
             if (student == null)
                 return NotFound("Student not found");
             return Ok(student);
@@ -42,17 +45,17 @@ namespace StudentResultAPI.Controllers
 
         // Search by name
         [HttpGet("search")]
-        public IActionResult SearchByName([FromQuery] string name)
+        public async Task<ActionResult<IEnumerable<StudentDto>>> SearchByName([FromQuery] string name)
         {
-            var students = _repo.SearchByName(name);
+            var students = await _service.SearchStudentsByNameAsync(name);
             return Ok(students);
         }
 
         // Update student
         [HttpPut("{id}")]
-        public IActionResult UpdateStudent(string id, Student updatedStudent)
+        public async Task<IActionResult> UpdateStudent(string id, UpdateStudentDto updateStudentDto)
         {
-            var success = _repo.UpdateStudent(id, updatedStudent);
+            var success = await _service.UpdateStudentAsync(id, updateStudentDto);
             if (!success)
                 return NotFound("Student not found");
             return Ok("Student updated successfully");
@@ -60,9 +63,9 @@ namespace StudentResultAPI.Controllers
 
         // Delete student
         [HttpDelete("{id}")]
-        public IActionResult DeleteStudent(string id)
+        public async Task<IActionResult> DeleteStudent(string id)
         {
-            var success = _repo.DeleteStudent(id);
+            var success = await _service.DeleteStudentAsync(id);
             if (!success)
                 return NotFound("Student not found");
             return Ok("Student deleted successfully");

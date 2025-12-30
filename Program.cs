@@ -1,11 +1,19 @@
+using StudentResultAPI.Middleware;
+using StudentResultAPI.Repositories;
+using StudentResultAPI.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add repository service
-builder.Services.AddSingleton<StudentResultAPI.Repositories.StudentRepository>();
+// Add services to the container.
+builder.Services.AddSingleton<IStudentRepository, StudentRepository>();
+builder.Services.AddScoped<IStudentService, StudentService>();
 
 builder.Services.AddControllers();
 
 var app = builder.Build();
+
+// Register Middleware
+app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 
 // Comment out HTTPS redirect for now if causing issues
 // app.UseHttpsRedirection();
